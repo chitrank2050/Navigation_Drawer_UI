@@ -15,7 +15,6 @@ class MenuDashboardLayout extends StatefulWidget {
 
 class _MenuDashboardLayoutState extends State<MenuDashboardLayout>
     with SingleTickerProviderStateMixin {
-  final Color backgroundColor = Color(0xFF4A4A58);
   bool isCollapsed = true;
   double screenWidth, screenHeight;
   final Duration duration = const Duration(milliseconds: 300);
@@ -71,7 +70,7 @@ class _MenuDashboardLayoutState extends State<MenuDashboardLayout>
     screenWidth = size.width;
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Color(0xFF4A4A58),
       body: BlocProvider<NavigationBloc>(
         create: (BuildContext context) => NavigationBloc(onMenuTap: onMenuTap),
         child: Stack(
@@ -92,7 +91,6 @@ class _MenuDashboardLayoutState extends State<MenuDashboardLayout>
               screenHeight: screenHeight,
               controller: _controller,
               scaleAnimation: _scaleAnimation,
-              backgroundColor: backgroundColor,
               child: BlocBuilder<NavigationBloc, NavigationStates>(
                 builder: (context, NavigationStates navigationStates) {
                   return navigationStates as Widget;

@@ -6,7 +6,6 @@ class Dashboard extends StatelessWidget {
   final Duration duration;
   final AnimationController controller;
   final Animation<double> scaleAnimation;
-  final Color backgroundColor;
   final Widget child;
 
   const Dashboard({
@@ -17,7 +16,6 @@ class Dashboard extends StatelessWidget {
     this.duration,
     this.controller,
     this.scaleAnimation,
-    this.backgroundColor,
     this.child,
   }) : super(key: key);
 
@@ -27,7 +25,7 @@ class Dashboard extends StatelessWidget {
       duration: duration,
       top: 0,
       bottom: 0,
-      left: isCollapsed ? 0 : 0.6 * screenWidth,
+      left: isCollapsed ? 0 : 0.5 * screenWidth,
       right: isCollapsed ? 0 : -0.2 * screenWidth,
       child: ScaleTransition(
         scale: scaleAnimation,
@@ -35,7 +33,6 @@ class Dashboard extends StatelessWidget {
           animationDuration: duration,
           borderRadius: BorderRadius.all(Radius.circular(40)),
           elevation: 8,
-          color: backgroundColor,
           child: child,
         ),
       ),
