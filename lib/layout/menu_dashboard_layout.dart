@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:side_drawer_ui/layout/dashboard.dart';
 import 'package:side_drawer_ui/layout/menu.dart';
+import 'package:side_drawer_ui/pages/messages_page.dart';
 import 'package:side_drawer_ui/pages/my_cards_page.dart';
+import 'package:side_drawer_ui/bloc/navigation_bloc.dart';
+import 'package:side_drawer_ui/pages/utility_bills_page.dart';
 
 class MenuDashboardLayout extends StatefulWidget {
   @override
@@ -48,6 +52,18 @@ class _MenuDashboardLayoutState extends State<MenuDashboardLayout>
     });
   }
 
+  int findSelectedIndex(NavigationStates navigationState) {
+    if (navigationState is MyCardsPage) {
+      return 0;
+    } else if (navigationState is MessagesPage) {
+      return 1;
+    } else if (navigationState is UtilityBillsPage) {
+      return 2;
+    } else {
+      return 0;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -56,23 +72,35 @@ class _MenuDashboardLayoutState extends State<MenuDashboardLayout>
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: Stack(
-        children: <Widget>[
-          Menu(
-            slideAnimation: _slideAnimation,
-            menuScaleAnimation: _menuScaleAnimation,
-          ),
-          Dashboard(
-            duration: duration,
-            isCollapsed: isCollapsed,
-            screenWidth: screenWidth,
-            screenHeight: screenHeight,
-            controller: _controller,
-            scaleAnimation: _scaleAnimation,
-            backgroundColor: backgroundColor,
-            child: MyCardsPage(onMenuTap: onMenuTap),
-          ),
-        ],
+      body: BlocProvider<NavigationBloc>(
+        create: (BuildContext context) => NavigationBloc(onMenuTap: onMenuTap),
+        child: Stack(
+          children: <Widget>[
+            BlocBuilder<NavigationBloc, NavigationStates>(
+              builder: (context, NavigationStates navigationState) {
+                return Menu(
+                  slideAnimation: _slideAnimation,
+                  menuScaleAnimation: _menuScaleAnimation,
+                  selectedIndex: findSelectedIndex(navigationState),
+                );
+              },
+            ),
+            Dashboard(
+              duration: duration,
+              isCollapsed: isCollapsed,
+              screenWidth: screenWidth,
+              screenHeight: screenHeight,
+              controller: _controller,
+              scaleAnimation: _scaleAnimation,
+              backgroundColor: backgroundColor,
+              child: BlocBuilder<NavigationBloc, NavigationStates>(
+                builder: (context, NavigationStates navigationStates) {
+                  return navigationStates as Widget;
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
