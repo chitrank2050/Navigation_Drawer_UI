@@ -74,6 +74,7 @@ class MyCardsPage extends StatelessWidget with NavigationStates {
                 ),
               ),
               ListView.separated(
+                primary: false,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
                   return ListTile(
